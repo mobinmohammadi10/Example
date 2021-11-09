@@ -13,11 +13,14 @@ public class Player_Controller : MonoBehaviour
     private float horizontal;
     private float vertical;
     private Vector2 moveDirection;
+    private Animator player_Animator;
+    private SpriteRenderer player_Sprite;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        player_Animator = GetComponent<Animator>();
+        player_Sprite = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -28,6 +31,7 @@ public class Player_Controller : MonoBehaviour
         {
             // do somthing here
         }
+        UpdateAnimations();
     }
 
     private void Moving()
@@ -49,5 +53,28 @@ public class Player_Controller : MonoBehaviour
             gameObject.transform.Translate(moveDirection * Time.deltaTime * sprintSpeed);
         }
         gameObject.transform.Translate(moveDirection * speed * Time.deltaTime);
+    }
+
+    private void UpdateAnimations()
+    {
+
+        if (Mathf.Abs(horizontal) > float.Epsilon || Mathf.Abs(vertical) > float.Epsilon)
+        {
+            player_Animator.SetBool("isWalking", true);
+        }
+        else
+        {
+            player_Animator.SetBool("isWalking", false);
+        }
+
+        if (horizontal < 0)
+        {
+            player_Sprite.flipX = true;
+        }
+
+        if (horizontal > 0)
+        {
+            player_Sprite.flipX = false;
+        }
     }
 }
